@@ -21,7 +21,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
 
   public async onModuleInit() {
     for (const subscriber of this.subscribers) {
-      const instance = this.moduleRef.create(subscriber);
+      const instance = await this.moduleRef.create(subscriber);
       const keys = Reflect.ownKeys(subscriber.prototype).filter((key) => key !== 'constructor');
       for (const key of keys) {
         const beforeListenMetadata: PrismaListenerMetadata = Reflect.getMetadata(NAILY_PRISMA_BEFORE_LISTENER, subscriber.prototype, key);

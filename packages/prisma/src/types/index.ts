@@ -7,7 +7,13 @@ export type PrismaModelName = Exclude<
       Exclude<
         Exclude<
           Exclude<
-            Exclude<Exclude<Exclude<Exclude<Exclude<keyof PrismaClient, symbol>, '$extends'>, '$transaction'>, '$queryRawUnsafe'>, '$queryRaw'>,
+            Exclude<
+              Exclude<
+                Exclude<Exclude<Exclude<Exclude<keyof PrismaClient, '$runCommandRaw'>, symbol>, '$extends'>, '$transaction'>,
+                '$queryRawUnsafe'
+              >,
+              '$queryRaw'
+            >,
             '$executeRawUnsafe'
           >,
           '$executeRaw'

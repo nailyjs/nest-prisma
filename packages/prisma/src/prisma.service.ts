@@ -41,7 +41,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
             return returnValue;
           };
         } else if (afterListenMetadata) {
-          this.logger.log(`PrismaListener: after listening ${subscriber.name}.${key.toString()} by ${instance.constructor.name}`);
+          this.logger.log(`PrismaListener: after listening ${subscriber.name}.${key.toString()}`);
           const oldMethod = this[afterListenMetadata.model][afterListenMetadata.method];
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore

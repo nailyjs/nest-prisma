@@ -1,5 +1,11 @@
 # @nailyjs.nest.modules/tencentcloud
 
+## 1.3.6
+
+### Patch Changes
+
+- 3e9ed00: fix: log & exclude mongodb' $runCommandRaw type
+
 ## 1.3.5
 
 ### Patch Changes

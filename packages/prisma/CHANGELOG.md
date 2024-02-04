@@ -1,5 +1,13 @@
 # @nailyjs.nest.modules/tencentcloud
 
+## 1.3.0
+
+### Minor Changes
+
+- 4ecb3aa: feat: add Prisma Filter factory
+- 38529d8: feat: add ALL for filter
+- be96953: feat: add filter factory
+
 ## 1.2.1
 
 ### Patch Changes

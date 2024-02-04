@@ -1,5 +1,11 @@
 # @nailyjs.nest.modules/tencentcloud
 
+## 1.3.5
+
+### Patch Changes
+
+- 166e69c: fix: log
+
 ## 1.3.4
 
 ### Patch Changes

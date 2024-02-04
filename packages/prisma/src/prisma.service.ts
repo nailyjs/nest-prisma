@@ -7,6 +7,7 @@ import { NAILY_PRISMA_AFTER_LISTENER, NAILY_PRISMA_BEFORE_LISTENER, NAILY_PRISMA
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
   private readonly subscribers: Type[] = [];
+  private readonly logger = new Logger(PrismaService.name);
 
   constructor(
     @Inject(NAILY_PRISMA_OPTIONS)
@@ -25,10 +26,11 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
       for (const key of keys) {
         const beforeListenMetadata: PrismaListenerMetadata = Reflect.getMetadata(NAILY_PRISMA_BEFORE_LISTENER, instance, key);
         const afterListenMetadata: PrismaListenerMetadata = Reflect.getMetadata(NAILY_PRISMA_AFTER_LISTENER, instance, key);
-        new Logger().log(`PrismaListener: ${subscriber.name}.${key.toString()}`);
+
         if (!beforeListenMetadata && !afterListenMetadata) continue;
 
         if (beforeListenMetadata) {
+          this.logger.log(`PrismaListener: before listening ${subscriber.name}.${key.toString()} by ${instance.constructor.name}`);
           const oldMethod = this[beforeListenMetadata.model][beforeListenMetadata.method];
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -40,6 +42,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
             return returnValue;
           };
         } else if (afterListenMetadata) {
+          this.logger.log(`PrismaListener: after listening ${subscriber.name}.${key.toString()} by ${instance.constructor.name}`);
           const oldMethod = this[afterListenMetadata.model][afterListenMetadata.method];
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore

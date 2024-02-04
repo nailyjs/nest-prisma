@@ -1,5 +1,11 @@
 # @nailyjs.nest.modules/tencentcloud
 
+## 1.3.1
+
+### Patch Changes
+
+- 63b8cea: fix: forRootAsync
+
 ## 1.3.0
 
 ### Minor Changes

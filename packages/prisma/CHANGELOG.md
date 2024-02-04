@@ -1,5 +1,11 @@
 # @nailyjs.nest.modules/tencentcloud
 
+## 1.3.2
+
+### Patch Changes
+
+- 646188f: feat: logger
+
 ## 1.3.1
 
 ### Patch Changes

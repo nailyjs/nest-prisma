@@ -1,4 +1,4 @@
-import { Type } from '@nestjs/common';
+import { HttpStatus, Type } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
 export type PrismaModelName = Exclude<
@@ -29,8 +29,18 @@ export interface PrismaListenerMetadata<ModelName extends PrismaModelName = Pris
   model: ModelName;
   method: PrismaModelMethodName<ModelName>;
 }
+
+export interface PrismaModuleFilterOptions {
+  httpStatus: HttpStatus | number;
+  httpHeaders: Record<string, any>;
+  httpResponseData: any;
+}
+export interface PrismaModuleFilter {
+  [prismaCode: string]: PrismaModuleFilterOptions;
+}
 export interface PrismaModuleOptions {
   subscribers: Type[];
+  filters: PrismaModuleFilter;
 }
 export interface PrismaModuleAsyncOptions {
   useFactory: (...args: any[]) => Promise<PrismaModuleOptions> | PrismaModuleOptions;

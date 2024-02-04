@@ -3,11 +3,15 @@ import { PrismaService } from './prisma.service';
 import { PrismaModuleAsyncOptions, PrismaModuleOptions } from './types';
 import { PrismaClient } from '@prisma/client';
 import { NAILY_PRISMA_OPTIONS } from './constants';
+import { APP_FILTER } from '@nestjs/core';
+import { PrismaExpressFilter } from './errors';
 
 @Module({})
 export class PrismaModule {
   public static forRoot(options: Partial<PrismaModuleOptions> = {}): DynamicModule {
+    options = options || {};
     options.subscribers = options.subscribers || [];
+    options.filters = options.filters || {};
     return {
       module: PrismaModule,
       providers: [
@@ -19,6 +23,10 @@ export class PrismaModule {
         {
           provide: PrismaClient,
           useClass: PrismaClient,
+        },
+        {
+          provide: APP_FILTER,
+          useClass: PrismaExpressFilter,
         },
         PrismaService,
       ],

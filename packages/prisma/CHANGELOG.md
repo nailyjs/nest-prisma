@@ -1,5 +1,11 @@
 # @nailyjs.nest.modules/tencentcloud
 
+## 1.3.3
+
+### Patch Changes
+
+- 70b92af: fix: because of change `get` to `create`, so Reflect.getMetadta change to get listener prototype
+
 ## 1.3.2
 
 ### Patch Changes

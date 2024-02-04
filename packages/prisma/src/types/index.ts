@@ -1,5 +1,5 @@
-import { HttpStatus, Type } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { ArgumentsHost, HttpStatus, Type } from '@nestjs/common';
+import { Prisma, PrismaClient } from '@prisma/client';
 
 export type PrismaModelName = Exclude<
   Exclude<
@@ -36,11 +36,15 @@ export interface PrismaModuleFilterOptions {
   httpResponseData: any;
 }
 export interface PrismaModuleFilter {
-  [prismaCode: string]: PrismaModuleFilterOptions;
+  [prismaCode: string]: Partial<PrismaModuleFilterOptions>;
+}
+export type PrismaModuleFilterFunctionType = (exception: Prisma.PrismaClientKnownRequestError, host: ArgumentsHost) => any;
+export interface PrismaModuleFilterFunction {
+  [prismaCode: string]: PrismaModuleFilterFunctionType;
 }
 export interface PrismaModuleOptions {
   subscribers: Type[];
-  filters: PrismaModuleFilter;
+  filters: PrismaModuleFilter | PrismaModuleFilterFunction;
 }
 export interface PrismaModuleAsyncOptions {
   useFactory: (...args: any[]) => Promise<PrismaModuleOptions> | PrismaModuleOptions;

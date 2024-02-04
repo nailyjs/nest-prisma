@@ -1,5 +1,11 @@
 # @nailyjs.nest.modules/tencentcloud
 
+## 1.0.0
+
+### Major Changes
+
+- feat: first commit
+
 ## 1.0.6
 
 ### Patch Changes

@@ -1,18 +1,18 @@
 {
-  "name": "@nailyjs.nest.modules/tencentcloud",
+  "name": "@nailyjs.nest.modules/prisma",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
   "types": "lib/types/index.d.ts",
-  "version": "1.0.6",
+  "version": "1.0.0",
   "scripts": {
     "build": "tsc -p tsconfig.build.json && rollup -c rollup.config.mjs",
     "prepublishOnly": "npm run build"
   },
   "bugs": {
     "email": "gczgroup@qq.com",
-    "url": "https://github.com/nailyjs/nest-tencentcloud/issues"
+    "url": "https://github.com/nailyjs/nest-Prisma/issues"
   },
-  "homepage": "https://github.com/nailyjs/nest-tencentcloud",
+  "homepage": "https://github.com/nailyjs/nest-Prisma",
   "author": {
     "name": "Zero",
     "email": "gczgroup@qq.com",
@@ -29,20 +29,20 @@
   },
   "keywords": [
     "nestjs",
-    "tencentcloud",
-    "tencentcloud-sdk-nodejs"
+    "prisma"
   ],
   "license": "Apache-2.0",
-  "description": "Nestjs TencentCloud Module",
+  "description": "Nestjs Prisma Module",
   "engines": {
     "node": ">=12"
   },
   "dependencies": {
-    "tencentcloud-sdk-nodejs": "^4.0.787"
+    "@prisma/client": "^5.9.1",
+    "prisma": "^5.9.1"
   },
   "devDependencies": {
-    "typescript": "^5.3.3",
+    "@nestjs/common": "^10.3.1",
     "@types/node": "^20.11.6",
-    "@nestjs/common": "^10.3.1"
+    "typescript": "^5.3.3"
   }
 }

@@ -1,26 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TencentCloudModule } from '@nailyjs.nest.modules/tencentcloud';
-import { sms } from 'tencentcloud-sdk-nodejs';
+import { PrismaModule } from '@nailyjs.nest.modules/prisma';
+import { TestListener } from './test.listener';
 
 @Module({
   imports: [
-    TencentCloudModule.registerAsync({
-      global: true,
-      clients: [
-        {
-          client: sms.v20210111.Client,
-          useFactory() {
-            return {
-              credential: {
-                secretId: 'Dd',
-                secretKey: 'vv',
-              },
-            };
-          },
-        },
-      ],
+    PrismaModule.forRoot({
+      subscribers: [TestListener],
     }),
   ],
   controllers: [AppController],

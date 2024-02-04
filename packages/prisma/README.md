@@ -1,7 +1,7 @@
-# Tencent Cloud Node SDK for Nest.js ☁️
+# Prisma for Nest.js 📊
 
-- [Official Node.js SDK Github](https://github.com/TencentCloud/tencentcloud-sdk-nodejs)
-- [Github](https://github.com/nailyjs/nest-tencentcloud)
+- [Prisma Official Github](https://github.com/prisma)
+- [Github](https://github.com/nailyjs/nest-prisma)
 
 This SDK is a nest.js version of the official Node.js SDK, which provides a simpler way to use in nest.
 
@@ -10,7 +10,7 @@ This SDK is a nest.js version of the official Node.js SDK, which provides a simp
 `npm`、`yarn`、`pnpm` are all supported. Recommend to use `pnpm`.
 
 ```bash
-$ pnpm i --save @nailyjs.nest.modules/tencentcloud tencentcloud-sdk-nodejs
+$ pnpm i --save @nailyjs.nest.modules/prisma prisma @prisma/client
 ```
 
 ## Usage 👋

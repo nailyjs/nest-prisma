@@ -11,7 +11,7 @@
 `npm`、`yarn`、`pnpm` 都支持，推荐使用 `pnpm`。
 
 ```bash
-$ pnpm i --save @nailyjs.nest.modules/prisma prisma
+$ pnpm i --save @nailyjs.nest.modules/prisma prisma @prisma/client
 ```
 
 ## 使用 👋
@@ -69,11 +69,24 @@ import { PrismaClient } from '@prisma/client';
 @Injectable()
 export class AppService {
   constructor(
+    // 允许直接注入PrismaService
     private readonly prismaService: PrismaService,
     // 可以直接注入PrismaClient。PrismaClient是一个单例。
     private readonly prismaClient: PrismaClient,
   ) {}
 
+  public async findMany() {
+    // 这里的`findMany`方法会触发上面注册的监听器。
+    this.prismaService.user.findMany();
+    // 或者直接使用PrismaClient
+    // 但是要注意的是，这里不会触发监听器，因为监听器是在PrismaService中注册的，
+    // 要触发监听器，必须使用PrismaService中的方法。
+    this.prismaClient.user.findMany();
+  }
+}
+
+@Injectable()
+export class PrismaListener {
   /**
    * 假设您有一个名为`user`的prisma模型，可以在这里注册一个监听器，监听`findMany`事件。
    * BeforeListen顾名思义，就是在`findMany`方法执行之前执行的方法。
@@ -90,16 +103,25 @@ export class AppService {
   public async afterFindMany() {
     console.log('after findMany');
   }
-
-  public async findMany() {
-    // 这里的`findMany`方法会触发上面注册的监听器。
-    this.prismaService.user.findMany();
-    // 或者直接使用PrismaClient
-    // 但是要注意的是，这里不会触发监听器，因为监听器是在PrismaService中注册的，
-    // 要触发监听器，必须使用PrismaService中的方法。
-    this.prismaClient.user.findMany();
-  }
 }
+```
+
+然后，监听器必须要在模块中注册。
+
+```typescript
+import { Module } from '@nestjs/common';
+import { PrismaModule } from '@nailyjs.nest.modules/prisma';
+import { PrismaListener } from './app.service';
+
+@Module({
+  imports: [
+    PrismaModule.forRoot({
+      // 注册监听器
+      listeners: [PrismaListener],
+    }),
+  ],
+})
+export class AppModule {}
 ```
 
 ## 作者 👨‍💻

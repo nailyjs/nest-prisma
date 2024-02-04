@@ -1,5 +1,11 @@
 # @nailyjs.nest.modules/tencentcloud
 
+## 1.3.4
+
+### Patch Changes
+
+- aaec736: fix: await create
+
 ## 1.3.3
 
 ### Patch Changes

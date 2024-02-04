@@ -1,5 +1,13 @@
 # @nailyjs.nest.modules/tencentcloud
 
+## 1.0.4
+
+### Patch Changes
+
+- 09b6c7f: feat: add PrismaModelName typing, PrismaModelMethodName typing and apply to BeforeListen & AfterListen; change changesets's config
+- 3a2eb07: feat: update PrismaModelMethodName type
+- 7492de3: feat: add PrismaModelName typing, PrismaModelMethodName typing and apply to BeforeListen & AfterListen
+
 ## 1.0.3
 
 ### Patch Changes

@@ -48,6 +48,10 @@ export class PrismaModule {
           provide: PrismaClient,
           useClass: PrismaClient,
         },
+        {
+          provide: APP_FILTER,
+          useClass: PrismaExpressFilter,
+        },
         PrismaService,
       ],
       exports: [PrismaService],

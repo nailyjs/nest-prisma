@@ -1,5 +1,11 @@
 # @nailyjs.nest.modules/tencentcloud
 
+## 1.1.0
+
+### Minor Changes
+
+- 3f45e14: feat: add forRootAsync module register method
+
 ## 1.0.4
 
 ### Patch Changes

@@ -1,129 +1,117 @@
-# Tencent Cloud Node SDK for Nest.js ☁️
+# Nest.js 版 Prisma Node SDK ☁️
 
-- [Official Node.js SDK Github](https://github.com/TencentCloud/tencentcloud-sdk-nodejs)
-- [Github](https://github.com/nailyjs/nest-tencentcloud)
+中文 | [English](./README_EN.md)
 
-This SDK is a nest.js version of the official Node.js SDK, which provides a simpler way to use in nest.
+[Prisma官方Github](https://github.com/prisma)
 
-## Installation 📦
+本SDK为`Prisma`的封装。提供了一种更高级的方式在Nest中使用`Prisma`: 监听器。
 
-`npm`、`yarn`、`pnpm` are all supported. Recommend to use `pnpm`.
+## 安装 📦
+
+`npm`、`yarn`、`pnpm` 都支持，推荐使用 `pnpm`。
 
 ```bash
-$ pnpm i --save @nailyjs.nest.modules/tencentcloud tencentcloud-sdk-nodejs
+$ pnpm i --save @nailyjs.nest.modules/prisma prisma
 ```
 
-## Usage 👋
+## 使用 👋
 
-### Import Module 🧩
+### 导入模块 🧩
 
-At first, you need to import the module and configure it.
+首先，先导入模块并配置。建议在根模块中导入。
 
-#### General Usage 🚀
+#### 正常用法 🚀
 
 ```typescript
 import { Module } from '@nestjs/common';
-import { sms } from 'tencentcloud-sdk-nodejs';
-import { TencentCloudModule } from '@nailyjs.nest.modules/tencentcloud';
+import { PrismaModule } from '@nailyjs.nest.modules/prisma';
 
 @Module({
   imports: [
-    TencentCloudModule.register({
-      // Tencent Cloud Sdk have many clients, you can configure them here.
-      clients: [
-        {
-          // The client class. You can find which client you need in the official documentation: https://github.com/TencentCloud/tencentcloud-sdk-nodejs?tab=readme-ov-file#%E7%AE%80%E4%BB%8B
-          client: sms.v20210111.Client,
-          // The client configuration object. You can find it in the official documentation: https://github.com/TencentCloud/tencentcloud-sdk-nodejs?tab=readme-ov-file#%E7%A4%BA%E4%BE%8B
-          options: {
-            credential: {
-              secretId: '',
-              secretKey: '',
-            },
-          },
-        },
-      ],
-      // If you want to use the client across all your modules, you can set global to true.
-      global: true,
-    }),
+    // 导入Prisma模块。如果不注册任何监听器，可以这么导入。
+    PrismaModule.forRoot(),
   ],
 })
 export class AppModule {}
 ```
 
-#### Async Usage 🚀
+#### 如何使用 🍞
 
-You can also use async configuration.
-
-```typescript
-import { Module } from '@nestjs/common';
-import { sms } from 'tencentcloud-sdk-nodejs';
-import { TencentCloudModule } from '@nailyjs.nest.modules/tencentcloud';
-
-@Module({
-  imports: [
-    TencentCloudModule.registerAsync({
-      // If you want to use the client across all your modules, you can set global to true.
-      global: true,
-      clients: [
-        {
-          // You can inject the configuration object here, such as ConfigService.
-          inject: [ConfigService],
-          useFactory: async (configService: ConfigService) => {
-            // Return the tencent cloud configuration object, 👆same as General Usage.
-            return {
-              credential: {
-                secretId: 'Hello',
-                secretKey: 'world',
-              },
-            };
-          },
-        },
-      ],
-    }),
-  ],
-})
-export class AppModule {}
-```
-
-### How to Use Client 📝
+从`@nailyjs.nest.modules/prisma`导入`PrismaService`，里面包含了`PrismaClient`的所有方法。
 
 ```typescript
-import { ClientRepository } from '@nailyjs.nest.modules/tencentcloud';
-import { Injectable, Inject } from '@nestjs/common';
-import { sms } from 'tencentcloud-sdk-nodejs';
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '@nailyjs.nest.modules/prisma';
 
 @Injectable()
-export class AppController {
-  constructor(
-    // You can inject the client here. For example, you want to use the sms client, you can do like this.
-    @Inject(sms.v20210111.Client)
-    private readonly client: ClientRepository<typeof sms.v20210111.Client>;
-  ) {}
+export class AppService {
+  constructor(private readonly prismaService: PrismaService) {}
 
-  public async sendSms() {
-    // You can use the sms client like this. It type safe.
-    const response = await this.client.SendSms({
-      SmsSdkAppId: '',
-      TemplateId: '',
-      PhoneNumberSet: ['110'],
-    });
+  async findMany() {
+    return this.prismaService.user.findMany();
   }
 }
 ```
 
-> ClientRepository is a generic type, you can use it to get the client type.
+#### 监听器 🎉
 
-## Author 👨‍💻
+`PrismaClient`我直接作为令牌注入了，所以你也可以直接使用`PrismaClient`。
+
+但是，如果你想要监听`PrismaClient`的方法，就不能直接使用`PrismaClient`了，而是要使用`PrismaService`。
+
+所以我建议平常就使用`PrismaService`，这样你可以在任何时候都可以添加监听器。
+
+```typescript
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '@nailyjs.nest.modules/prisma';
+import { PrismaClient } from '@prisma/client';
+
+@Injectable()
+export class AppService {
+  constructor(
+    private readonly prismaService: PrismaService,
+    // 可以直接注入PrismaClient。PrismaClient是一个单例。
+    private readonly prismaClient: PrismaClient,
+  ) {}
+
+  /**
+   * 假设您有一个名为`user`的prisma模型，可以在这里注册一个监听器，监听`findMany`事件。
+   * BeforeListen顾名思义，就是在`findMany`方法执行之前执行的方法。
+   */
+  @BeforeListen('user', 'findMany')
+  public async beforeFindMany() {
+    console.log('before findMany');
+  }
+
+  /**
+   * AfterListen顾名思义，就是在`findMany`方法执行之后执行的方法。
+   */
+  @AfterListen('user', 'findMany')
+  public async afterFindMany() {
+    console.log('after findMany');
+  }
+
+  public async findMany() {
+    // 这里的`findMany`方法会触发上面注册的监听器。
+    this.prismaService.user.findMany();
+    // 或者直接使用PrismaClient
+    // 但是要注意的是，这里不会触发监听器，因为监听器是在PrismaService中注册的，
+    // 要触发监听器，必须使用PrismaService中的方法。
+    this.prismaClient.user.findMany();
+  }
+}
+```
+
+## 作者 👨‍💻
 
 ###### **Zero**
 
 - QQ：1203970284
-- Gtihub: [Click to go](https://groupguanfang/groupguanfang)
+- Gtihub: [跳转](https://groupguanfang/groupguanfang)
 
-## Donate ☕️
+## ☕️ 捐赠 ☕️
 
-If you think this project is helpful to you, you can buy me a cup of coffee QWQ~
+如果你觉得这个项目对你有帮助，你可以请我喝杯咖啡QWQ~
 
 ![wechat](./screenshots/wechat.jpg)
 ![alipay](./screenshots/alipay.jpg)

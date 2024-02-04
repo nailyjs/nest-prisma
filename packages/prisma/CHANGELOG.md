@@ -1,5 +1,11 @@
 # @nailyjs.nest.modules/tencentcloud
 
+## 1.0.1
+
+### Patch Changes
+
+- chore: README
+
 ## 1.0.0
 
 ### Major Changes

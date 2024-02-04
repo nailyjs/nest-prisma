@@ -1,5 +1,11 @@
 # @nailyjs.nest.modules/tencentcloud
 
+## 1.2.0
+
+### Minor Changes
+
+- be3b284: feat: add PrismaExpressFilter
+
 ## 1.1.0
 
 ### Minor Changes

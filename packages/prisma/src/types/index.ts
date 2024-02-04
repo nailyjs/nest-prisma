@@ -47,6 +47,6 @@ export interface PrismaModuleOptions {
   filters: PrismaModuleFilter | PrismaModuleFilterFunction;
 }
 export interface PrismaModuleAsyncOptions {
-  useFactory: (...args: any[]) => Promise<PrismaModuleOptions> | PrismaModuleOptions;
+  useFactory: (...args: any[]) => Promise<Partial<PrismaModuleOptions>> | Partial<PrismaModuleOptions>;
   inject?: any[];
 }

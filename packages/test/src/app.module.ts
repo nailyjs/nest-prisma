@@ -6,8 +6,12 @@ import { TestListener } from './test.listener';
 
 @Module({
   imports: [
-    PrismaModule.forRoot({
-      subscribers: [TestListener],
+    PrismaModule.forRootAsync({
+      useFactory() {
+        return {
+          subscribers: [TestListener],
+        };
+      },
     }),
   ],
   controllers: [AppController],

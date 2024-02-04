@@ -7,6 +7,9 @@ import { APP_FILTER } from '@nestjs/core';
 import { PrismaExpressFilter } from './errors';
 
 @Module({})
+class PrismaFactoryModule {}
+
+@Module({})
 export class PrismaModule {
   public static forRoot(options: Partial<PrismaModuleOptions> = {}): DynamicModule {
     options = options || {};
@@ -38,6 +41,7 @@ export class PrismaModule {
   public static forRootAsync(options: PrismaModuleAsyncOptions): DynamicModule {
     return {
       module: PrismaModule,
+      imports: [PrismaFactoryModule],
       providers: [
         {
           provide: NAILY_PRISMA_OPTIONS,

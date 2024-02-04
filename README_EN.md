@@ -1,4 +1,4 @@
-# Nest.js 版 Prisma Node SDK ☁️
+# Nest.js 版 Prisma ☁️
 
 中文 | [English](./README_EN.md)
 

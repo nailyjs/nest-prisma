@@ -1,5 +1,5 @@
 import { NAILY_PRISMA_AFTER_LISTENER, NAILY_PRISMA_BEFORE_LISTENER } from '../constants';
-import { PrismaEvent, PrismaListenerMetadata } from '../types';
+import { PrismaListenerMetadata, PrismaModelName, PrismaModelMethodName } from '../types';
 
 /**
  * After using this "@Beforelisten" decorator, this method will be
@@ -16,9 +16,14 @@ import { PrismaEvent, PrismaListenerMetadata } from '../types';
  * @param {string} method
  * @return {MethodDecorator}
  */
-export function BeforeListen(model: PrismaEvent, method: string): MethodDecorator {
+export function BeforeListen<ModelName extends PrismaModelName>(model: ModelName, method: PrismaModelMethodName<ModelName>): MethodDecorator {
   return (target, key) => {
-    Reflect.defineMetadata(NAILY_PRISMA_BEFORE_LISTENER, { model, method } satisfies PrismaListenerMetadata, target, key);
+    Reflect.defineMetadata(
+      NAILY_PRISMA_BEFORE_LISTENER,
+      { model, method: method as PrismaModelMethodName<ModelName> } satisfies PrismaListenerMetadata<ModelName>,
+      target,
+      key,
+    );
   };
 }
 
@@ -37,8 +42,13 @@ export function BeforeListen(model: PrismaEvent, method: string): MethodDecorato
  * @param {string} method your method name
  * @return {MethodDecorator}
  */
-export function AfterListen(model: PrismaEvent, method: string): MethodDecorator {
+export function AfterListen<ModelName extends PrismaModelName>(model: ModelName, method: PrismaModelMethodName<ModelName>): MethodDecorator {
   return (target, key) => {
-    Reflect.defineMetadata(NAILY_PRISMA_AFTER_LISTENER, { model, method } satisfies PrismaListenerMetadata, target, key);
+    Reflect.defineMetadata(
+      NAILY_PRISMA_AFTER_LISTENER,
+      { model, method: method as PrismaModelMethodName<ModelName> } satisfies PrismaListenerMetadata<ModelName>,
+      target,
+      key,
+    );
   };
 }

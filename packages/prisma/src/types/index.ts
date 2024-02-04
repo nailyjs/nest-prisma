@@ -32,3 +32,7 @@ export interface PrismaListenerMetadata<ModelName extends PrismaModelName = Pris
 export interface PrismaModuleOptions {
   subscribers: Type[];
 }
+export interface PrismaModuleAsyncOptions {
+  useFactory: (...args: any[]) => Promise<PrismaModuleOptions> | PrismaModuleOptions;
+  inject?: any[];
+}

@@ -1,6 +1,6 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
-import { PrismaModuleOptions } from './types';
+import { PrismaModuleAsyncOptions, PrismaModuleOptions } from './types';
 import { PrismaClient } from '@prisma/client';
 import { NAILY_PRISMA_OPTIONS } from './constants';
 
@@ -23,6 +23,26 @@ export class PrismaModule {
         PrismaService,
       ],
       exports: [...options.subscribers, PrismaService],
+      global: true,
+    };
+  }
+
+  public static forRootAsync(options: PrismaModuleAsyncOptions): DynamicModule {
+    return {
+      module: PrismaModule,
+      providers: [
+        {
+          provide: NAILY_PRISMA_OPTIONS,
+          useFactory: options.useFactory,
+          inject: options.inject || [],
+        },
+        {
+          provide: PrismaClient,
+          useClass: PrismaClient,
+        },
+        PrismaService,
+      ],
+      exports: [PrismaService],
       global: true,
     };
   }

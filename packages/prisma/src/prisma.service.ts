@@ -29,7 +29,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
         if (!beforeListenMetadata && !afterListenMetadata) continue;
 
         if (beforeListenMetadata) {
-          this.logger.log(`PrismaListener: before listening ${subscriber.name}.${key.toString()} by ${instance.constructor.name}`);
+          this.logger.log(`PrismaListener: before listening ${subscriber.name}.${key.toString()}`);
           const oldMethod = this[beforeListenMetadata.model][beforeListenMetadata.method];
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore

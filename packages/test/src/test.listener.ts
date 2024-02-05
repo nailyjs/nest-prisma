@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class TestListener {
-  @BeforeListen('user', 'findMany')
+  @BeforeListen('user.findMany')
   public async findManyBefore() {
     console.log('有人执行了用户表上的findMany方法! 前置钩子已经执行');
   }

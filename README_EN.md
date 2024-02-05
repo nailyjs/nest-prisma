@@ -103,6 +103,23 @@ export class PrismaListener {
   public async afterFindMany() {
     console.log('after findMany');
   }
+
+  /**
+   * 监听器还支持这么写。TS会有非常完善的类型提示（小小地做了一下类型体操
+   */
+  @BeforeListen('user.findMany')
+  public async beforeFindMany() {
+    console.log('before findMany');
+  }
+
+  /**
+   * 1.4.0版本之后支持多个监听器调用同一个方法。
+   */
+  @AfterListen('user.findMany')
+  @BeforeListen('user.create')
+  public async afterFindMany() {
+    console.log('after findMany & before create');
+  }
 }
 ```
 

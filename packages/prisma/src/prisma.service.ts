@@ -24,34 +24,37 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
       const instance = await this.moduleRef.create(subscriber);
       const keys = Reflect.ownKeys(subscriber.prototype).filter((key) => key !== 'constructor');
       for (const key of keys) {
-        const beforeListenMetadata: PrismaListenerMetadata = Reflect.getMetadata(NAILY_PRISMA_BEFORE_LISTENER, subscriber.prototype, key);
-        const afterListenMetadata: PrismaListenerMetadata = Reflect.getMetadata(NAILY_PRISMA_AFTER_LISTENER, subscriber.prototype, key);
+        const beforeListenMetadata: PrismaListenerMetadata[] = Reflect.getMetadata(NAILY_PRISMA_BEFORE_LISTENER, subscriber.prototype, key);
+        const afterListenMetadata: PrismaListenerMetadata[] = Reflect.getMetadata(NAILY_PRISMA_AFTER_LISTENER, subscriber.prototype, key);
         if (!beforeListenMetadata && !afterListenMetadata) continue;
 
         if (beforeListenMetadata) {
-          this.logger.log(`PrismaListener: before listening ${subscriber.name}.${key.toString()}`);
-          const oldMethod = this[beforeListenMetadata.model][beforeListenMetadata.method];
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          this[beforeListenMetadata.model][beforeListenMetadata.method] = async (...args: any[]) => {
-            await instance[key](...args);
+          for (const metadata of beforeListenMetadata) {
+            this.logger.log(`Before listening ${metadata.model}.${metadata.method} by ${subscriber.name}.${key.toString()}`);
+            const oldMethod = this[metadata.model][metadata.method];
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            const returnValue = await oldMethod(...args);
-            return returnValue;
-          };
+            this[metadata.model][metadata.method] = async (...args: any[]) => {
+              await instance[key](...args);
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              return await oldMethod(...args);
+            };
+          }
         } else if (afterListenMetadata) {
-          this.logger.log(`PrismaListener: after listening ${subscriber.name}.${key.toString()}`);
-          const oldMethod = this[afterListenMetadata.model][afterListenMetadata.method];
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          this[afterListenMetadata.model][afterListenMetadata.method] = async (...args: any[]) => {
+          for (const metadata of afterListenMetadata) {
+            this.logger.log(`After listening ${metadata.model}.${metadata.method} by ${subscriber.name}.${key.toString()}`);
+            const oldMethod = this[metadata.model][metadata.method];
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            const returnValue = await oldMethod(...args);
-            await instance[key](...args);
-            return returnValue;
-          };
+            this[metadata.model][metadata.method] = async (...args: any[]) => {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              const returnValue = await oldMethod(...args);
+              await instance[key](...args);
+              return returnValue;
+            };
+          }
         }
       }
     }

@@ -30,6 +30,7 @@ export type PrismaModelMethodName<ModelName extends PrismaModelName = PrismaMode
   Exclude<keyof (typeof PrismaClient.prototype)[ModelName], symbol>,
   'fields'
 >;
+export type PrismaModelPath<ModelName extends PrismaModelName = PrismaModelName> = `${ModelName}.${PrismaModelMethodName<ModelName>}`;
 
 export interface PrismaListenerMetadata<ModelName extends PrismaModelName = PrismaModelName> {
   model: ModelName;

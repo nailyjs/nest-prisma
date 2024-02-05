@@ -1,5 +1,11 @@
 # @nailyjs.nest.modules/tencentcloud
 
+## 1.5.0
+
+### Minor Changes
+
+- e8201f2: feat: add @Args, @Method, @Model, @ReturnValue param decorator
+
 ## 1.4.1
 
 ### Patch Changes

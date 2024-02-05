@@ -1,5 +1,16 @@
 # @nailyjs.nest.modules/tencentcloud
 
+## 1.4.0
+
+### Minor Changes
+
+- a58e2e1: feat: add ModelNamePath's code style
+
+### Patch Changes
+
+- 2e3104c: feat: update README
+- bc78dcf: feat: support multiple decorator on one method
+
 ## 1.3.6
 
 ### Patch Changes

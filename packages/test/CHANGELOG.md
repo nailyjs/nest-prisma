@@ -4,6 +4,13 @@
 
 ### Patch Changes
 
+- Updated dependencies [fb0fe2a]
+  - @nailyjs.nest.modules/prisma@1.4.1
+
+## null
+
+### Patch Changes
+
 - Updated dependencies [a58e2e1]
 - Updated dependencies [2e3104c]
 - Updated dependencies [bc78dcf]

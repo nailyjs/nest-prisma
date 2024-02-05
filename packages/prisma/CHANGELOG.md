@@ -1,5 +1,11 @@
 # @nailyjs.nest.modules/tencentcloud
 
+## 1.4.1
+
+### Patch Changes
+
+- fb0fe2a: feat: update 1.4.0 README
+
 ## 1.4.0
 
 ### Minor Changes

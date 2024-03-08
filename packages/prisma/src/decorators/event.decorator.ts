@@ -74,6 +74,9 @@ export function AfterListen<ModelName extends PrismaModelName>(model: PrismaMode
  * will be executed after the `findUnique` method of the "user"
  * model is executed.
  *
+ * This decorator principle is the `Proxy API` of `PrismaClient`.
+ * @see ProxyAPI https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy
+ *
  * @author Zero <gczgroup@qq.com>
  * @date 2024/02/04
  * @export

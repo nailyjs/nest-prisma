@@ -8,6 +8,8 @@ export class AppController {
 
   @Get()
   public getHello() {
-    return this.prismaService.user.findMany();
+    return this.prismaService.user.findMany({
+      where: { name: '114514' },
+    });
   }
 }

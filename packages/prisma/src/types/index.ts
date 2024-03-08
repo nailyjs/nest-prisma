@@ -1,31 +1,8 @@
 import { ArgumentsHost, HttpStatus, Type } from '@nestjs/common';
 import { Prisma, PrismaClient } from '@prisma/client';
 
-export type PrismaModelName = Exclude<
-  Exclude<
-    Exclude<
-      Exclude<
-        Exclude<
-          Exclude<
-            Exclude<
-              Exclude<
-                Exclude<Exclude<Exclude<Exclude<keyof PrismaClient, '$runCommandRaw'>, symbol>, '$extends'>, '$transaction'>,
-                '$queryRawUnsafe'
-              >,
-              '$queryRaw'
-            >,
-            '$executeRawUnsafe'
-          >,
-          '$executeRaw'
-        >,
-        '$on'
-      >,
-      '$use'
-    >,
-    '$disconnect'
-  >,
-  '$connect'
->;
+export type PrismaModelName = Exclude<keyof PrismaClient, `$${string}` | symbol>;
+
 export type PrismaModelMethodName<ModelName extends PrismaModelName = PrismaModelName> = Exclude<
   Exclude<keyof (typeof PrismaClient.prototype)[ModelName], symbol>,
   'fields'
@@ -36,6 +13,9 @@ export interface PrismaListenerMetadata<ModelName extends PrismaModelName = Pris
   model: ModelName;
   method: PrismaModelMethodName<ModelName>;
 }
+export type PrismaBeforeListenerParameterMetadata = 'args' | 'model' | 'method';
+export type PrismaAfterListenerParameterMetadata = PrismaBeforeListenerParameterMetadata | 'return';
+export type PrismaListenerParameterMetadata = PrismaBeforeListenerParameterMetadata | PrismaAfterListenerParameterMetadata;
 
 export interface PrismaModuleFilterOptions {
   httpStatus: HttpStatus | number;

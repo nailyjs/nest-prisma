@@ -1,4 +1,4 @@
-# Nest.js 版 Prisma ☁️
+# Nest.js 版 Prisma 📊
 
 中文 | [English](./README_EN.md)
 
@@ -141,6 +141,78 @@ import { PrismaListener } from './app.service';
 export class AppModule {}
 ```
 
+##### 参数装饰器
+
+`1.5.0`之后被`BeforeListen`和`AfterListen`装饰的方法都支持参数装饰器。
+
+###### @Model 💎
+
+- Available: `@BeforeListen` `@AfterListen`
+- 作用：用于获取当前模型名称。
+
+在多个监听器装饰同一方法时，可以使用这个装饰器来获取当前模型名称。可以从库里导入工具类型`PrismaModelName`辅助推断，它是一个联合类型，包含了所有的模型名称。
+
+```typescript
+@Injectable()
+export class PrismaListener {
+  @BeforeListen('user.findMany')
+  public async beforeFindMany(@Model() model: PrismaModelName) {
+    console.log(`${model} start finding many!`);
+  }
+}
+```
+
+###### @Method 💎
+
+- Available: `@BeforeListen` `@AfterListen`
+- 作用：用于获取当前执行的方法名称。
+
+在多个监听器装饰同一方法时，可以使用这个装饰器来获取当前方法名称。可以从库里导入工具类型`PrismaMethodName`辅助推断，它是一个联合类型，包含了所有的方法名称。
+
+```typescript
+@Injectable()
+export class PrismaListener {
+  @BeforeListen('user.findMany')
+  public async beforeFindMany(@Method() method: PrismaMethodName) {
+    console.log(`start execute ${method}!`);
+  }
+}
+```
+
+###### @Args 💎
+
+- Available: `@BeforeListen` `@AfterListen`
+- 作用：用于获取当前执行的方法的参数。
+
+```typescript
+@Injectable()
+export class PrismaListener {
+  @BeforeListen('user.findMany')
+  public async beforeFindMany(@Args() args: any[]) {
+    console.log(`start execute findMany with args: ${args}`);
+  }
+}
+```
+
+###### @Result 💎
+
+- Available: `@AfterListen`
+- 作用：用于获取当前执行的方法的返回值。只支持在`@AfterListen`中使用。
+
+毕竟在`@BeforeListen`执行时，方法都还没开始执行（（😂
+
+`result`拿到的是执行成功时候的返回值。如果方法执行失败，整个`BeforeListen`都不会执行；直接抛出错误，交给nest.js的异常处理器处理。
+
+```typescript
+@Injectable()
+export class PrismaListener {
+  @AfterListen('user.findMany')
+  public async afterFindMany(@Result() result: any) {
+    console.log(`findMany executed with result: ${result}`);
+  }
+}
+```
+
 ## 作者 👨‍💻
 
 ###### **Zero**
@@ -154,3 +226,7 @@ export class AppModule {}
 
 ![wechat](./screenshots/wechat.jpg)
 ![alipay](./screenshots/alipay.jpg)
+
+```
+
+```
